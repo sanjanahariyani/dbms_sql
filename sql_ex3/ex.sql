@@ -1,187 +1,68 @@
- create table voters
-  (
+create table voters
+(
    id number(10)primary key,
-   name varchar2(10) not null,
-   state varchar2(10)check(state in('gujarat','maharashtra')),
-   city varchar2(10)check(city in('rajkot','gandhinagar','ahemdabad','mumbai','pune','nagpur'))
-   );
+   name varchar2(20) not null,
+   state varchar2(20) constraint statee check(state in('gujarat','maharashtra')),
+   city varchar2(20) constraint cy check(city in('rajkot','gandhinagar','ahemdabad','mumbai','pune','nagpur'))
+);
 
 
- 1... alter table voters add ward_no number(5);
+1) alter table voters add ward_no number(5);
+   desc voters;
 
-Table altered.
-SQL> desc voters;
- Name                                      Null?    Type
- ----------------------------------------- -------- ----------------------------
- ID                                        NOT NULL NUMBER(10)
- NAME                                      NOT NULL VARCHAR2(10)
- STATE                                              VARCHAR2(10)
- CITY                                               VARCHAR2(10)
- WARD_NO                                            NUMBER(5)
+2) alter table voters drop primary key;
+   desc voters;
 
+3) alter table voters modify id VARCHAR2(10);
+   alter table voters add constraint ide check(id like 'E____');
+   desc voters;
 
+4) alter table voters rename column id to voters_id;
+   desc voters;
 
- 2...
-SQL> alter table voters drop primary key;
+5) alter table voters add gender varchar2(20) constraint gen check(gender in('male','female','transgender'));
+   desc voters;
 
-Table altered.
+6) insert into voters values('E1211','aaa','gujarat','rajkot',11,'male');
+   insert into voters values('E1212','bbb','maharashtra','pune',12,'female');
+   insert into voters values('E1213','ccc','gujarat','nagpur',13,'male');
+   insert into voters values('E1214','ddd','maharashtra','ahemdabad',14,'female');
+   insert into voters values('E1215','eee','gujarat','rajkot',15,'female');
+   select * from voters;
 
-SQL> desc voters;
- Name                                      Null?    Type
- ----------------------------------------- -------- ----------------------------
- ID                                                 NUMBER(10)
- NAME                                      NOT NULL VARCHAR2(10)
- STATE                                              VARCHAR2(10)
- CITY                                               VARCHAR2(10)
- WARD_NO                                            NUMBER(5)
+7) update voters set ward_no=18 where ward_no=12;
+   select * from voters;
 
+8) truncate table voters;
 
- 3....
- SQL> ALTER TABLE voters MODIFY id VARCHAR2(10);
+9) alter table voters add age number(10) constraint age check(age>=18);
 
-Table altered.
- 
- ALTER TABLE voters ADD CONSTRAINT chk_voters_id CHECK (voters_id LIKE 'E____');
+10) insert into voters values('E1211','aaa','gujarat','rajkot',11,'male',18);
+    insert into voters values('E1212','bbb','maharashtra','pune',12,'female',19);
+    insert into voters values('E1213','ccc','gujarat','nagpur',13,'male',20);
+    insert into voters values('E1214','ddd','maharashtra','ahemdabad',14,'female',21);
+    insert into voters values('E1215','eee','gujarat','rajkot',15,'female',22);
+   select * from voters;
 
-SQL> desc voters;
- Name                                      Null?    Type
- ----------------------------------------- -------- ----------------------------
- ID                                                 VARCHAR2(10)
- NAME                                      NOT NULL VARCHAR2(10)
- STATE                                              VARCHAR2(10)
- CITY                                               VARCHAR2(10)
- WARD_NO                                            NUMBER(5)
+11) update voters set age=22 where age=18;
+   select * from voters;
 
+12) update voters set city='pune',state='maharashtra',ward_no=16 where voters_id='E1213';
+   select * from voters;
 
-4...
- alter table voters rename column id to voters_id;
+13) alter table voters drop constraint chk_voters_id;
+    desc voters;
 
-Table altered.
+14) update voters set voters_id = substr(name,1,2)||'EPIC';
+    select * from voters;
 
-SQL> desc voters;
- Name                                      Null?    Type
- ----------------------------------------- -------- ----------------------------
- VOTERS_ID                                          VARCHAR2(10)
- NAME                                      NOT NULL VARCHAR2(10)
- STATE                                              VARCHAR2(10)
- CITY                                               VARCHAR2(10)
- WARD_NO                                            NUMBER(5)
+15) update voters set ward_no=10 where gender='male';
+    select * from voters;
 
+16) update voters set city='rajkot';
+    select * from voters;
 
- 5...
-  alter table voters add gender varchar2(10)check(gender in('male','female','transgender'));
+17) update voters set state='gujarat';
+    select * from voters;
 
-Table altered.
-
-SQL> desc voters;
- Name                                      Null?    Type
- ----------------------------------------- -------- ----------------------------
- VOTERS_ID                                          VARCHAR2(10)
- NAME                                      NOT NULL VARCHAR2(10)
- STATE                                              VARCHAR2(10)
- CITY                                               VARCHAR2(10)
- WARD_NO                                            NUMBER(5)
- GENDER                                             VARCHAR2(10)
-
- 6..
-  insert into voters values('E1211','aaa','gujarat','rajkot',11,'female');
- insert into voters values('E1212','bbb','gujarat','rajkot',12,'female');
- insert into voters values('E1213','ccc','gujarat','pune',13,'female');
- insert into voters values('E1214','ddd','gujarat','nagpur',14,'male');
- insert into voters values('E1215','eee','gujarat','rajkot',15,'male');
-
-
-
-SQL> select * from voters;
-
-VOTERS_ID  NAME       STATE      CITY          WARD_NO GENDER
----------- ---------- ---------- ---------- ---------- ----------
-E1211      aaa        gujarat    rajkot            111 female
-E1212      bbb        gujarat    rajkot            222 female
-E1213      ccc        gujarat    pune              333 female
-E1214      ddd        gujarat    nagpur            444 male
-E1215      eee        gujarat    rajkot            555 male
-
-
-7...
- update voters set ward_no=18 where ward_no=12;
-
-1 row updated.
-
-SQL> select * from voters;
-
-VOTERS_ID  NAME       STATE      CITY          WARD_NO GENDER
----------- ---------- ---------- ---------- ---------- ----------
-E1211      aaa        gujarat    rajkot            111 female
-E1212      bbb        gujarat    rajkot            222 female
-E1213      ccc        gujarat    pune              333 female
-E1214      ddd        gujarat    nagpur            444 male
-E1215      eee        gujarat    rajkot            555 male
-E1215      eee        gujarat    rajkot             18 female
-
-
-8....
- truncate table voters;
-
-Table truncated.
-
-SQL> desc voters;
- Name                                      Null?    Type
- ----------------------------------------- -------- ----------------------------
- VOTERS_ID                                          VARCHAR2(10)
- NAME                                      NOT NULL VARCHAR2(10)
- STATE                                              VARCHAR2(10)
- CITY                                               VARCHAR2(10)
- WARD_NO                                            NUMBER(5)
- GENDER                                             VARCHAR2(10)
-
- 9...
-  alter table voters add age number(10)check(age>=18);
-
-  10..
-  insert into voters values('E1211','aaa','gujarat','rajkot',111,'female',18);
- insert into voters values('E1212','bbb','gujarat','rajkot',222,'female',21);
- insert into voters values('E1213','ccc','gujarat','pune',333,'female',22);
- insert into voters values('E1214','ddd','gujarat','nagpur',444,'male',23);
- insert into voters values('E1215','eee','gujarat','rajkot',555,'male',19);
-
-
-    11...
-    
-    
-
-update voters set age=22 where age=18;
-
-
-
-
-    12...
-    
-     alter table voters modify(state varchar2(20));
-
-     update voters set city='pune',state='maharashtra',ward_no=16 where voters_id='E1213';
-
-
-
-        select * from voters;
-
-VOTERS_ID  NAME       STATE                CITY          WARD_NO GENDER            AGE
----------- ---------- -------------------- ---------- ---------- ---------- ----------
-E1211      aaa        gujarat              rajkot            111 female             22
-E1212      bbb        gujarat              rajkot            222 female             19
-E1213      ccc        maharashtra          pune               16 female             22
-E1214      ddd        gujarat              nagpur            444 male               23
-E1215      eee        gujarat              rajkot            555 male               20
-
-
-
-
-13...
-
-alter table voters drop constraint chk_voters_id;
-
-
-
-
-
-
+18) alter table voters rename to EPIC;
